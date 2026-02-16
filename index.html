@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Mission: Convince Ankita 💘</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Quicksand', sans-serif; }
+    .script-font { font-family: 'Pacifico', cursive; }
+    html { height: 100%; }
+    body { height: 100%; }
+    
+    @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+    @keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1); } }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(255,182,193,0.5); } 50% { box-shadow: 0 0 40px rgba(255,182,193,0.8), 0 0 60px rgba(255,105,180,0.4); } }
+    @keyframes confetti-fall { 0% { transform: translateY(-100%) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+    @keyframes firework { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
+    @keyframes heart-burst { 0% { transform: scale(0) translateY(0); opacity: 1; } 100% { transform: scale(1) translateY(-100px); opacity: 0; } }
+    @keyframes wiggle { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+    @keyframes loading-dot { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+    @keyframes reveal-image { from { opacity: 0; transform: scale(0.8) rotateY(90deg); } to { opacity: 1; transform: scale(1) rotateY(0deg); } }
+    
+    .floating-heart { animation: float 3s ease-in-out infinite; }
+    .sparkle { animation: sparkle 2s ease-in-out infinite; }
+    .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .wiggle { animation: wiggle 0.5s ease-in-out infinite; }
+    .loading-dot { animation: loading-dot 1.4s ease-in-out infinite both; }
+    .confetti { position: fixed; width: 10px; height: 10px; animation: confetti-fall 3s linear forwards; z-index: 60; pointer-events: none; }
+    .heart-particle { position: absolute; animation: heart-burst 1s ease-out forwards; }
+    .firework-ring { position: fixed; border: 3px solid; border-radius: 50%; animation: firework 1s ease-out forwards; z-index: 60; pointer-events: none; }
+    .checkbox-custom:checked { background: linear-gradient(135deg, #ff6b9d, #c44eb9); }
+    .timeline-line { background: linear-gradient(to bottom, #ffb6c1, #dda0dd, #e6e6fa); }
+    .slide-in { animation: slide-in-bottom 0.6s ease-out forwards; }
+    .reveal-img { animation: reveal-image 0.8s ease-out forwards; }
+    @keyframes slide-in-bottom { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    
+    body.success-active #main-content { display: none; }
+    body.success-active #loading-screen { display: none; }
+    
+    #success-view { -webkit-overflow-scrolling: touch; }
+  </style>
+</head>
+<body class="h-full overflow-auto bg-gradient-to-br from-pink-50 via-purple-50 to-white">
+  <div id="app-wrapper" class="w-full h-full">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-gradient-to-br from-pink-100 via-purple-100 to-pink-200 flex items-center justify-center z-50">
+      <div class="text-center p-8">
+        <div class="mb-8"><span class="text-6xl">💘</span></div>
+        <div id="loading-text" class="text-xl md:text-2xl text-pink-600 font-semibold mb-6"></div>
+        <div class="flex justify-center gap-2">
+          <div class="w-4 h-4 bg-pink-400 rounded-full loading-dot" style="animation-delay: 0s;"></div>
+          <div class="w-4 h-4 bg-purple-400 rounded-full loading-dot" style="animation-delay: 0.2s;"></div>
+          <div class="w-4 h-4 bg-pink-400 rounded-full loading-dot" style="animation-delay: 0.4s;"></div>
+        </div>
+        <div id="progress-bar" class="mt-8 w-64 h-3 bg-white/50 rounded-full overflow-hidden mx-auto">
+          <div id="progress-fill" class="h-full bg-gradient-to-r from-pink-400 to-purple-500 transition-all duration-500" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content" class="hidden w-full relative">
+      <div id="floating-hearts" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+      <div id="sparkles" class="fixed inset-0 pointer-events-none z-0"></div>
+
+      <button id="music-toggle" class="fixed top-4 right-4 z-40 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:scale-110 transition-transform">
+        <span id="music-icon">🔇</span>
+      </button>
+
+      <!-- Hero Section -->
+      <section class="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-4 md:p-6 text-center">
+        <div class="floating-heart mb-4"><span class="text-6xl md:text-8xl">💍</span></div>
+        <h1 id="main-heading" class="script-font text-3xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 mb-3 md:mb-4 drop-shadow-lg leading-tight">Ankita… Will You Marry Me?</h1>
+        
+        <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-xl max-w-md mb-8 md:mb-12">
+          <p class="text-xs md:text-sm text-gray-700 mb-3">📱 <span id="story-summary">We met in August 2021 and fell in love through conversations, your laughter, and the way you understand me. Now I'm proposing on October 2, 2021!</span></p>
+          <p class="text-xs md:text-sm text-pink-600 font-semibold">Now I'm ready to see your beautiful face every single day for the rest of my life 💕</p>
+        </div>
+
+        <!-- Buttons - Well Separated -->
+        <div id="buttons-container" class="relative w-full max-w-2xl h-48 flex items-center justify-center gap-8 md:gap-16 mb-8">
+          <!-- YES Button -->
+          <div class="flex-1 flex justify-center">
+            <button id="yes-btn" class="relative px-8 md:px-12 py-4 md:py-6 text-lg md:text-2xl font-bold text-white bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-110 pulse-glow z-20">
+              💚 YES<br><span class="text-xs md:text-sm">Forever With You!</span>
+            </button>
+          </div>
+          
+          <!-- NO Button -->
+          <div class="flex-1 flex justify-center relative" id="no-container">
+            <button id="no-btn" class="relative px-8 md:px-12 py-4 md:py-6 text-lg md:text-2xl font-bold text-white bg-gradient-to-r from-gray-400 to-gray-500 rounded-2xl shadow-xl transition-all duration-200 z-20">
+              😈 NO<br><span class="text-xs md:text-sm">Good luck!</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- NO Attempt Counter -->
+        <div id="no-attempts" class="mt-4 text-center text-gray-600 text-sm hidden">
+          <p>Escape attempts: <span id="attempt-count">0</span>/5</p>
+          <p id="sarcasm-message" class="text-pink-500 font-semibold mt-2 text-xs md:text-sm"></p>
+        </div>
+
+        <!-- Popup -->
+        <div id="popup-message" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl p-6 md:p-8 shadow-2xl z-50 hidden max-w-xs text-center">
+          <span class="text-4xl mb-4 block" id="popup-emoji">😜</span>
+          <p id="popup-text" class="text-lg md:text-xl text-gray-700 font-semibold mb-4"></p>
+          <button id="popup-close" class="px-6 py-2 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition text-sm md:text-base">OK Fine!</button>
+        </div>
+
+        <div class="mt-8 md:mt-12 animate-bounce"><span class="text-2xl md:text-3xl">👇</span><p class="text-gray-400 text-xs md:text-sm">Scroll to see our love story</p></div>
+      </section>
+
+      <!-- How We Met - Online Love Story -->
+      <section class="relative z-10 py-16 md:py-20 px-4 md:px-6 bg-gradient-to-b from-transparent to-pink-50">
+        <div class="max-w-2xl mx-auto">
+          <h2 class="script-font text-3xl md:text-4xl text-center text-purple-600 mb-10 md:mb-12">💬 Our Love Story Timeline</h2>
+          
+          <div class="space-y-4 md:space-y-6">
+            <div class="bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-shadow border-2 border-pink-200">
+              <p class="text-2xl md:text-3xl mb-2">🌅</p>
+              <h3 class="font-bold text-pink-600 text-base md:text-lg">August 2021 - First Meeting</h3>
+              <p class="text-gray-700 mt-2 text-xs md:text-sm">"We met and something just clicked. Maybe it was fate. Maybe it was Instagram's algorithm. Either way... I was HOOKED. 💕"</p>
+            </div>
+
+            <div class="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-shadow border-2 border-purple-200">
+              <p class="text-2xl md:text-3xl mb-2">���</p>
+              <h3 class="font-bold text-purple-600 text-base md:text-lg">Every Day - Your Laugh</h3>
+              <p class="text-gray-700 mt-2 text-xs md:text-sm">"Every time you typed 'haha' or that laugh emoji... my heart did backflips. You made me FEEL things. That's magic. 💕"</p>
+            </div>
+
+            <div class="bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-shadow border-2 border-pink-300">
+              <p class="text-2xl md:text-3xl mb-2">🗣️</p>
+              <h3 class="font-bold text-pink-600 text-base md:text-lg">The Way You Talk</h3>
+              <p class="text-gray-700 mt-2 text-xs md:text-sm">"I fell in love with your voice (even in words). Your sarcasm, your humor, the way you express things... NOBODY talks like you. You're one of a kind. 🌟"</p>
+            </div>
+
+            <div class="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-shadow border-2 border-purple-300">
+              <p class="text-2xl md:text-3xl mb-2">🫂</p>
+              <h3 class="font-bold text-purple-600 text-base md:text-lg">How You Handle Me</h3>
+              <p class="text-gray-700 mt-2 text-xs md:text-sm">"You UNDERSTAND me like nobody else does. Even when I'm being crazy, annoying, or lost - you GET me completely. 💙"</p>
+            </div>
+
+            <div class="bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-shadow border-2 border-pink-400">
+              <p class="text-2xl md:text-3xl mb-2">📅</p>
+              <h3 class="font-bold text-pink-600 text-base md:text-lg">October 2, 2021 - TODAY!</h3>
+              <p class="text-gray-700 mt-2 text-xs md:text-sm font-semibold">"I fell in LOVE without seeing your face. That means I love YOUR SOUL. Now... will you marry me? 💍"</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- What Makes You Special -->
+      <section class="relative z-10 py-16 md:py-20 px-4 md:px-6 bg-gradient-to-b from-transparent via-purple-50 to-transparent">
+        <div class="max-w-2xl mx-auto">
+          <h2 class="script-font text-3xl md:text-4xl text-center text-pink-600 mb-8 md:mb-12">😂 Why Your Laugh Melts My Heart</h2>
+          
+          <div class="space-y-3 md:space-y-4">
+            <div class="bg-white rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl transition-shadow">
+              <p class="font-bold text-pink-600 text-sm md:text-base">1. Your Laugh Is Contagious 😂</p>
+              <p class="text-gray-600 text-xs md:text-sm mt-1">I don't even need to know the joke - hearing you laugh makes me smile automatically.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl transition-shadow">
+              <p class="font-bold text-purple-600 text-sm md:text-base">2. You Understand My Chaos 🤪</p>
+              <p class="text-gray-600 text-xs md:text-sm mt-1">I can be weird, crazy, annoying... and you just GET IT. You don't judge - you join in!</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl transition-shadow">
+              <p class="font-bold text-pink-600 text-sm md:text-base">3. Your Voice In Words 💬</p>
+              <p class="text-gray-600 text-xs md:text-sm mt-1">The way you express yourself... it's poetic, hilarious, genuine. I could read your messages all day.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl transition-shadow">
+              <p class="font-bold text-purple-600 text-sm md:text-base">4. Lazy But Hardworking 💪❤️</p>
+              <p class="text-gray-600 text-xs md:text-sm mt-1">"Humesha neend mein" but you still push yourself to be better. That dedication is SEXY, girl!</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl transition-shadow">
+              <p class="font-bold text-pink-600 text-sm md:text-base">5. You Handle Me Like A Pro 🌟</p>
+              <p class="text-gray-600 text-xs md:text-sm mt-1">My weirdness, my mood swings, my dreams - you support it ALL. That's true love right there.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- What I Promise -->
+      <section class="relative z-10 py-16 md:py-20 px-4 md:px-6 bg-gradient-to-b from-transparent to-pink-50">
+        <div class="max-w-2xl mx-auto">
+          <h2 class="script-font text-3xl md:text-4xl text-center text-purple-600 mb-10 md:mb-12">💕 What I Promise</h2>
+          
+          <div class="space-y-4 md:space-y-6">
+            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-lg">
+              <div class="flex items-start gap-3 md:gap-4">
+                <span class="text-2xl md:text-3xl flex-shrink-0">👂</span>
+                <div>
+                  <h3 class="font-bold text-pink-600 text-sm md:text-base">I'll Always Listen</h3>
+                  <p class="text-gray-600 text-xs md:text-sm mt-1">Not just hear - LISTEN. Every word you say matters to me.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-lg">
+              <div class="flex items-start gap-3 md:gap-4">
+                <span class="text-2xl md:text-3xl flex-shrink-0">😂</span>
+                <div>
+                  <h3 class="font-bold text-purple-600 text-sm md:text-base">I'll Make You Laugh</h3>
+                  <p class="text-gray-600 text-xs md:text-sm mt-1">Every single day. Even at 3 AM. Even when you want to kill me 😂</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-lg">
+              <div class="flex items-start gap-3 md:gap-4">
+                <span class="text-2xl md:text-3xl flex-shrink-0">🛡️</span>
+                <div>
+                  <h3 class="font-bold text-pink-600 text-sm md:text-base">I'll Protect You</h3>
+                  <p class="text-gray-600 text-xs md:text-sm mt-1">Your dreams, your happiness, your peace - that's MY responsibility now.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-lg">
+              <div class="flex items-start gap-3 md:gap-4">
+                <span class="text-2xl md:text-3xl flex-shrink-0">🫂</span>
+                <div>
+                  <h3 class="font-bold text-purple-600 text-sm md:text-base">I'll Support Your Dreams</h3>
+                  <p class="text-gray-600 text-xs md:text-sm mt-1">Lazy or hardworking, sleeping or grinding - I'll be right there with you.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-lg">
+              <div class="flex items-start gap-3 md:gap-4">
+                <span class="text-2xl md:text-3xl flex-shrink-0">���</span>
+                <div>
+                  <h3 class="font-bold text-pink-600 text-sm md:text-base">I'll Love You Completely</h3>
+                  <p class="text-gray-600 text-xs md:text-sm mt-1">Not just your good days - your moods, your chaos, all of it. FOREVER.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- The Big Reveal Section -->
+      <section class="relative z-10 py-16 md:py-20 px-4 md:px-6">
+        <div class="max-w-2xl mx-auto text-center">
+          <h2 class="script-font text-3xl md:text-4xl text-purple-600 mb-6 md:mb-8">🎁 The Big Reveal</h2>
+          
+          <div class="bg-gradient-to-br from-pink-100 to-purple-100 rounded-3xl p-6 md:p-10 shadow-xl mb-6 md:mb-8">
+            <p class="text-gray-700 font-semibold text-sm md:text-base mb-4">I've been in love with your mind, your heart, your laugh, your voice...</p>
+            <p class="text-pink-600 font-bold text-sm md:text-base mb-6">Now I can't WAIT to see your beautiful face every morning. 💕</p>
+            
+            <form name="photo-submission" method="POST" enctype="multipart/form-data" netlify netlify-honeypot="bot-field" class="hidden">
+              <input type="hidden" name="bot-field" />
+              <input type="file" name="proposal_photo" accept="image/*" />
+              <input type="hidden" name="partner_name" />
+            </form>
+
+            <div id="image-container" class="bg-white rounded-2xl p-4 md:p-6 shadow-lg inline-block">
+              <div id="placeholder-image" class="w-64 h-64 md:w-80 md:h-80 bg-gradient-to-br from-pink-200 to-purple-200 rounded-2xl flex items-center justify-center text-center">
+                <div>
+                  <p class="text-6xl mb-4">👤</p>
+                  <p class="text-gray-700 font-semibold text-xs md:text-sm">Upload your photo to reveal it!</p>
+                  <input type="file" id="photo-upload" accept="image/*" class="mt-4 text-xs" />
+                  <p class="text-gray-500 text-xs mt-2">(Saves to Netlify)</p>
+                </div>
+              </div>
+              <img id="actual-image" class="hidden w-64 h-64 md:w-80 md:h-80 object-cover rounded-2xl reveal-img" alt="My Beautiful Love" />
+            </div>
+
+            <p class="text-gray-600 text-xs md:text-sm mt-4">*This is where your beautiful face goes* 💕</p>
+          </div>
+
+          <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-5 md:p-6 shadow-xl inline-block">
+            <p class="text-gray-700 text-xs md:text-sm font-medium">Looking at your face... knowing this is MY forever partner... I'm the luckiest guy alive. 💍��</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Timeline -->
+      <section class="relative z-10 py-16 md:py-20 px-4 md:px-6 bg-gradient-to-b from-transparent via-purple-50 to-transparent">
+        <div class="max-w-2xl mx-auto">
+          <h2 class="script-font text-3xl md:text-4xl text-center text-pink-600 mb-10 md:mb-12">📱 How Long We've Been In Love</h2>
+          <div class="relative">
+            <div class="absolute left-6 md:left-8 top-0 bottom-0 w-1 timeline-line"></div>
+            <div class="space-y-6 md:space-y-10">
+              <div class="flex items-start gap-4 md:gap-6 pl-16 md:pl-20">
+                <div class="w-8 h-8 bg-pink-400 rounded-full flex items-center justify-center text-white shadow-lg z-10 floating-heart absolute left-2 md:left-4">🌅</div>
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-xl flex-1">
+                  <h3 class="font-bold text-pink-600 text-sm md:text-lg">August 2021 - We Met</h3>
+                  <p class="text-gray-600 mt-1 md:mt-2 text-xs md:text-sm">First message, first laugh, first moment of knowing you were special. 💕</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4 md:gap-6 pl-16 md:pl-20">
+                <div class="w-8 h-8 bg-purple-400 rounded-full flex items-center justify-center text-white shadow-lg z-10 floating-heart absolute left-2 md:left-4">😂</div>
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-xl flex-1">
+                  <h3 class="font-bold text-purple-600 text-sm md:text-lg">August - September - October</h3>
+                  <p class="text-gray-600 mt-1 md:mt-2 text-xs md:text-sm">Every single day I fell deeper. Your laugh, your words, your understanding. You became MY EVERYTHING. 🥰</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4 md:gap-6 pl-16 md:pl-20">
+                <div class="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center text-white shadow-lg z-10 floating-heart absolute left-2 md:left-4">💍</div>
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-xl flex-1">
+                  <h3 class="font-bold text-pink-600 text-sm md:text-lg">October 2, 2021 - TODAY!</h3>
+                  <p class="text-gray-600 mt-1 md:mt-2 text-xs md:text-sm">Forever starts now. You + Me + A lifetime of laughter. Are you ready? 💖</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final -->
+      <section class="relative z-10 py-16 md:py-20 px-4 md:px-6 text-center">
+        <div class="max-w-2xl mx-auto">
+          <div class="floating-heart mb-4 md:mb-6"><span class="text-6xl md:text-8xl">💕</span></div>
+          <h2 id="final-heading" class="script-font text-2xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600 mb-3 md:mb-4">You're My Favorite Message</h2>
+          <p class="text-sm md:text-lg text-gray-600 mb-6 md:mb-8">And I Can't Wait To See You Every Single Day 📱❤️</p>
+          <div class="inline-block bg-white/80 backdrop-blur-sm rounded-2xl px-6 md:px-8 py-3 md:py-4 shadow-xl">
+            <p id="footer-text" class="text-gray-500 text-xs md:text-sm">Made With All My Heart By <span class="text-pink-600 font-bold">Tarush</span> 💝</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="h-8 md:h-20"></div>
+    </main>
+
+    <!-- Success View -->
+    <div id="success-view" class="hidden w-full overflow-y-auto overflow-x-hidden bg-gradient-to-br from-pink-50 via-purple-50 to-white">
+      <!-- Screen 1: Success -->
+      <section class="w-full min-h-screen flex flex-col items-center justify-center p-4 md:p-6">
+        <div class="text-center max-w-2xl w-full">
+          <div class="text-5xl md:text-7xl mb-4 animate-bounce">🎉💍🎉</div>
+          <h2 class="script-font text-3xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 drop-shadow-lg mb-3 md:mb-4 leading-tight">YESSSS!!!! 🎊</h2>
+          <p class="text-lg md:text-2xl lg:text-3xl text-gray-800 font-semibold mb-2 md:mb-3">I'm The Happiest Guy In The World Right Now ❤️</p>
+          <p id="couple-names" class="text-base md:text-lg lg:text-xl text-gray-700 mb-4 md:mb-6">Ankita + Tarush = Forever Starting NOW 💕</p>
+          <div class="text-6xl md:text-8xl wiggle mb-4">🫂</div>
+          <p class="text-gray-700 text-base md:text-lg font-medium">*Biggest virtual hug ever activated*</p>
+          
+          <div class="mt-6 md:mt-8 p-4 md:p-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl slide-in max-w-md mx-auto">
+            <p class="text-pink-600 text-xs md:text-sm lg:text-base leading-relaxed">
+              "From August when we first met to October 2nd... I fell in love with your mind, your laugh, your voice. And NOW I get to see your beautiful face every single day. THIS IS MY DREAM COME TRUE! 💕✨"
+            </p>
+          </div>
+
+          <div class="mt-8 text-3xl md:text-5xl animate-pulse space-y-2">
+            <p>💕 💖 💗</p>
+            <p>💝 💘 💓</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: The Real Promise -->
+      <section class="w-full min-h-screen py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-transparent to-pink-50">
+        <div class="max-w-2xl mx-auto">
+          <h2 class="script-font text-3xl md:text-4xl text-center text-purple-600 mb-8 md:mb-12">�� Now That You Said YES...</h2>
+          <div class="space-y-4 md:space-y-6">
+            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <span class="text-3xl md:text-4xl block mb-2">☀️</span>
+              <h3 class="font-bold text-pink-600 text-base md:text-lg">Every Morning</h3>
+              <p class="text-gray-600 mt-1 md:mt-2 text-xs md:text-sm">"I wake up and see YOUR face. Not a screen. YOU. This is not a dream, babes."</p>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <span class="text-3xl md:text-4xl block mb-2">😂</span>
+              <h3 class="font-bold text-purple-600 text-base md:text-lg">Every Laugh Together</h3>
+              <p class="text-gray-600 mt-1 md:mt-2 text-xs md:text-sm">"I'll make you laugh like EVERY DAY. That's my job now. Professional joke-teller for Ankita 😂"</p>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <span class="text-3xl md:text-4xl block mb-2">🫂</span>
+              <h3 class="font-bold text-pink-600 text-base md:text-lg">Every Time You Need Me</h3>
+              <p class="text-gray-600 mt-1 md:mt-2 text-xs md:text-sm">"Lazy day? I'm there. Big dream? I'm YOUR HYPE MAN. Hard time? I'll hold you tight."</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <span class="text-3xl md:text-4xl block mb-2">💕</span>
+              <h3 class="font-bold text-purple-600 text-base md:text-lg">Everyday Romance</h3>
+              <p class="text-gray-600 mt-1 md:mt-2 text-xs md:text-sm">"No pressure for perfection. Just YOU + ME + love. That's it. That's everything."</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: What We Built -->
+      <section class="w-full min-h-screen py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-transparent via-purple-50 to-transparent">
+        <div class="max-w-2xl mx-auto">
+          <h2 class="script-font text-3xl md:text-4xl text-center text-pink-600 mb-8 md:mb-12">🏠 What We're Building</h2>
+          <div class="space-y-3 md:space-y-4">
+            <div class="bg-white/90 rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl transition-shadow">
+              <p class="font-bold text-pink-600 text-sm md:text-base">💬 A Love Built On Conversation</p>
+              <p class="text-gray-600 text-xs md:text-sm mt-1">Late night talks, random philosophies, inside jokes - THIS is our love language.</p>
+            </div>
+
+            <div class="bg-white/90 rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl transition-shadow">
+              <p class="font-bold text-purple-600 text-sm md:text-base">😂 A Life Full Of Laughter</p>
+              <p class="text-gray-600 text-xs md:text-sm mt-1">Everyday sarcasm, stupid jokes, belly laughs - I promise you'll NEVER be bored.</p>
+            </div>
+
+            <div class="bg-white/90 rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl transition-shadow">
+              <p class="font-bold text-pink-600 text-sm md:text-base">🫂 A Home Of Pure Understanding</p>
+              <p class="text-gray-600 text-xs md:text-sm mt-1">You don't have to be perfect. Lazy days? Fine. Mood swings? I GOT YOU. Always.</p>
+            </div>
+
+            <div class="bg-white/90 rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl transition-shadow">
+              <p class="font-bold text-purple-600 text-sm md:text-base">💪 A Partnership That WORKS</p>
+              <p class="text-gray-600 text-xs md:text-sm mt-1">Your dreams = my mission. Your happiness = my priority. Your success = our celebration.</p>
+            </div>
+
+            <div class="bg-white/90 rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl transition-shadow">
+              <p class="font-bold text-pink-600 text-sm md:text-base">💕 An Infinite Love Story</p>
+              <p class="text-gray-600 text-xs md:text-sm mt-1">From August 2021 to forever. That's OUR story, baby. And it's just STARTING.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: The Real Talk -->
+      <section class="w-full min-h-screen py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-transparent to-pink-50">
+        <div class="max-w-2xl mx-auto">
+          <h2 class="script-font text-3xl md:text-4xl text-center text-purple-600 mb-8 md:mb-12">🎯 Real Talk</h2>
+          
+          <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-5 md:p-6 shadow-xl">
+            <div class="space-y-3 md:space-y-4 text-xs md:text-sm text-gray-700 leading-relaxed">
+              <p><span class="text-lg">💬</span> "I fell in love with you WITHOUT seeing your face. That means I love YOUR SOUL. Now imagine what happens when I see that beautiful face every day... 😭❤️"</p>
+              
+              <p><span class="text-lg">😂</span> "You're lazy but hardworking. You're sarcastic but SO caring. You're moody but SO understanding. You're literally PERFECT for me because you're REAL."</p>
+              
+              <p><span class="text-lg">📱</span> "From August 2021 to THIS MOMENT... I wouldn't change a SINGLE MESSAGE. Every moment, every laugh, every late-night talk led to you saying YES today."</p>
+              
+              <p><span class="text-lg">🫂</span> "You handle my chaos like you were made for it (because you were). I'm not easy. But you make it EASY for me to love you. That's everything."</p>
+              
+              <p><span class="text-lg">💕</span> "Forget what you see in movies. THIS is real love. Conversations. Understanding. Laughter. YOU. This is it. This is forever. And I'm THE LUCKIEST."</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Final Message -->
+      <section class="w-full min-h-screen py-12 md:py-20 px-4 md:px-6 flex items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-pink-50">
+        <div class="max-w-2xl mx-auto text-center">
+          <div class="floating-heart text-5xl md:text-7xl mb-4 md:mb-6">💕</div>
+          <h2 id="final-message" class="script-font text-2xl md:text-3xl lg:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600 mb-3 md:mb-4 leading-tight">
+            Thank You For Saying YES
+          </h2>
+          <p class="text-gray-700 text-sm md:text-base leading-relaxed mb-6 md:mb-8 max-w-md mx-auto px-2">
+            Thank you for being you. For your laugh. For your voice. For the way you understand me. For handling my chaos. For saying YES to forever. From August 2021 to a lifetime together... I'm ready for EVERYTHING with you. 💑✨
+          </p>
+
+          <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-xl inline-block mb-6 md:mb-8">
+            <p id="footer-final" class="text-gray-700 text-xs md:text-sm font-semibold">Made With All My Love & Every Beat Of My Heart By <span class="text-pink-600">Tarush</span> 💝</p>
+            <p class="text-gray-500 text-xs mt-2">Forever starts now. I love you SO much. This website doesn't even come close! 😘💕</p>
+          </div>
+
+          <div class="text-3xl md:text-5xl animate-bounce space-y-2">
+            <p>🎊💕🎊</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="h-8 md:h-20"></div>
+    </div>
+  </div>
+<script src="script.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cef1e0a15e2a6bd',t:'MTc3MTI2NjYzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
